@@ -1,4 +1,35 @@
-main() {}
+import 'dart:io';
+import 'dart:core';
+
+main() {
+  var userInput;
+  Map<String, List> database = {
+    "duck": [],
+  };
+  //current database
+  database['duck'] = ['can it fly?'];
+  database['duck'].add('can it swim?');
+
+// to add new animal if its not present
+  database['dog'] == null
+      ? database['dog'] = []
+      : database['dog'].add('can it bark');
+
+  database['dog'].add('can it bark?');
+  database['dog'].add('can it bark?');
+  //remove duplicate property of same animal,
+  database['dog'] = database['dog'].toSet().toList();
+
+  for (int i = 0; i < database.length; i++) {
+    String x = 'can it fly?';
+  }
+
+  print(database);
+//  print('think of an animal');
+//  userInput = stdin.readLineSync();
+//
+//  print("you entered $userInput");
+}
 
 /// Sample Output
 // Think of an animal
@@ -92,7 +123,6 @@ main() {}
 //
 // Want to play again?
 // no
-
 
 //In Class Run Through
 // Think of animal

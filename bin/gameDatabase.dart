@@ -6,26 +6,30 @@ class Question {
   String negativeResponse;
   Question nextQuestion;
 
-  Question(this.question, this.positiveResponse, this.negativeResponse,
-      this.nextQuestion);
+//  Question(
+//      {this.question,
+//      this.positiveResponse,
+//      this.negativeResponse,
+//      this.nextQuestion});
 }
 
-class QuestionBank {
-  List<Question> questions = [];
-  static String questionsJSON = """
-[{'can it fly?':{'yes':'can it Swim','no':'can it swim?'}}]
+void main() {
+  Question questionBank = Question();
+  questionBank.question = 'can it fly?';
+  questionBank.positiveResponse = 'can it swim?';
+  questionBank.negativeResponse = 'can it climb trees?';
 
+  Link firstLink = Link();
+  firstLink.value = 'Raj';
+  firstLink.next = Link();
+  firstLink.next.value = 'Makiko';
+  firstLink.next.next = Link();
+  firstLink.next.next.value = 'Paul';
 
-""";
+  print(firstLink);
+}
 
-  List data = jsonDecode(animalsJSON);
-
-  GameData() {
-    data.forEach((animalMap) {
-      animals.add(Animal(
-          animalName: animalMap['animalName'],
-          property1: animalMap['property1'],
-          property2: animalMap['property2']));
-    });
-  }
+class Link {
+  var next;
+  var value;
 }

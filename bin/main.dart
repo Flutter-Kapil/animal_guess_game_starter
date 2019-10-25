@@ -1,201 +1,112 @@
+import 'dart:convert';
+
 import 'dart:io';
-import 'dart:core';
 
-main() {
-  var userInput;
-  Map<String, List> database = {
-    "duck": [],
-  };
-  //current database
-  database['duck'] = ['can it fly?'];
-  database['duck'].add('can it swim?');
+class Question {
+  String question;
+  Question positiveResponse;
+  Question negativeResponse;
+  String positiveAnswer;
+  String negativeAnswer;
 
-// to add new animal if its not present
-  database['dog'] == null
-      ? database['dog'] = []
-      : database['dog'].add('can it bark');
-
-  database['dog'].add('can it bark?');
-  database['dog'].add('can it bark?');
-  //remove duplicate property of same animal,
-  database['dog'] = database['dog'].toSet().toList();
-
-  for (int i = 0; i < database.length; i++) {
-    String x = 'can it fly?';
-  }
-
-  print(database);
-//  print('think of an animal');
-//  userInput = stdin.readLineSync();
-//
-//  print("you entered $userInput");
+//  Question(
+//      {this.question,
+//      this.positiveResponse,
+//      this.negativeResponse,
+//      this.nextQuestion});
 }
 
-/// Sample Output
-// Think of an animal
-// Is it a duck?
-// No
-// Oops - looks like I need to improve.
-// What is the animal?
-// A monkey
-// What question would distinguish between a duck and A monkey?
-// Can it fly?
-// For A monkey, is the answer yes or no?
-// No
-// Thanks for helping me to improve!
-//
-// Want to play again?
-// Yes
-// Think of an animal
-// Can it fly?
-// Yes
-// Is it a duck?
-// No
-// Oops - looks like I need to improve.
-// What is the animal?
-// Parrot
-// What question would distinguish between a duck and Parrot?
-// Can it swim?
-// For Parrot, is the answer yes or no?
-// No
-// Thanks for helping me to improve!
-//
-// Want to play again?
-// Yes
-// Think of an animal
-// Can it fly?
-// No
-// Is it A monkey?
-// Yes
-// Yay!  I got it!
-//
-// Want to play again?
-// Yes
-// Think of an animal
-// Can it fly?
-// No
-// Is it A monkey?
-// No
-// Oops - looks like I need to improve.
-// What is the animal?
-// Dog
-// What question would distinguish between A monkey and Dog?
-// Can it climb trees?
-// For Dog, is the answer yes or no?
-// no
-// Thanks for helping me to improve!
-//
-// Want to play again?
-// yes
-// Think of an animal
-// Can it fly?
-// No
-// Can it climb trees?
-// No
-// Is it Dog?
-// No
-// Oops - looks like I need to improve.
-// What is the animal?
-// a cow
-// What question would distinguish between Dog and a cow?
-// Is it taller than 1 meter?
-// For a cow, is the answer yes or no?
-// yes
-// Thanks for helping me to improve!
-//
-// Want to play again?
-// yes
-// Think of an animal
-// Can it fly?
-// No
-// Can it climb trees?
-// Yes
-// Is it A monkey?
-// No
-// Oops - looks like I need to improve.
-// What is the animal?
-// a cat
-// What question would distinguish between A monkey and a cat?
-// Is it a pet?
-// For a cat, is the answer yes or no?
-// yes
-// Thanks for helping me to improve!
-//
-// Want to play again?
-// no
+void main() {
+  //1st lock
+  Question questionBank = Question();
+  questionBank.question = 'can it fly?';
+  questionBank.positiveResponse = Question(); //can it swim
+  questionBank.positiveAnswer = null;
+  questionBank.negativeAnswer = null;
+  questionBank.negativeResponse = Question(); // can it climb trees
 
-//In Class Run Through
-// Think of animal
-// Is it a duck?
-/// no
-// improve me
-// What is the animal
-/// Tiger
-// Distinguishing question b/w tiger and duck
-/// Can it Fly?
-// For Tiger is the answer yes/no?
-/// No
+  //origin -left 1
+//  questionBank.positiveResponse = Question(); //can it swim
+  questionBank.positiveResponse.question = 'can it swim?';
+  questionBank.positiveResponse.positiveResponse = null;
+  questionBank.positiveResponse.negativeResponse = null;
+  questionBank.positiveResponse.positiveAnswer = 'duck';
+  questionBank.positiveResponse.negativeAnswer = 'Parrot';
 
-// Think of an Animal
-// Can it fly?
-/// yes
-// Is it a duck?
-/// no
-// improve me
-// What is the animal
-/// Eagle
-// improving question
-/// Is it a predatory animal
-// for eagle is it yes or no
-/// yes
-//
-// Think of an Animal
-// Can it fly?
-/// no
-// Is it a tiger?
-/// no
-// Which animal?
-/// Elephant
-// distinguish b/w elep and tiger
-/// Is it herbivorous?
-// is the answer for elephant yes/no
-/// yes
+  //origin-right1
+//  questionBank.negativeResponse = Question(); // can it climb trees
+  questionBank.negativeResponse.question = 'can it climb trees?';
+  questionBank.negativeResponse.positiveResponse = null;
+  questionBank.negativeResponse..positiveAnswer = 'monkey';
+  questionBank.negativeResponse.negativeResponse = Question(); //is it a pet
+  questionBank.negativeResponse.negativeAnswer = null;
 
-// Think of an Animal
-// Can it fly?
-/// no
-// Is it herbivorous?
-/// yes
-// Elephant is it?
-/// no
-// which one it is imrpve me
-/// Cow
-// distinguish b/w elephant and cow
-/// does it have trunk
-// for cow is it yes or no
-/// no
+//  questionBank.negativeResponse.negativeResponse = Question();//is it a pet
+  questionBank.negativeResponse.negativeResponse.question = 'is it a pet?';
+  questionBank.negativeResponse.negativeResponse.positiveResponse = null;
+  questionBank.negativeResponse.negativeResponse.negativeResponse =
+      Question(); //is it taller than 2m
+  questionBank.negativeResponse.negativeResponse.positiveAnswer = 'dog';
+  questionBank.negativeResponse.negativeResponse.negativeAnswer = null;
 
-// Think of animal
-//  Can it fly?
-/// yes
-// Is it a predator?
-/// yes
-// is it a eagle?
-/// no
-// improve me
-/// bat
-// distinguish question bat and eagle
-/// Is it nocturnal
-// yes or no for bat
-/// yes
+//  questionBank.negativeResponse.negativeResponse.negativeResponse=Question();//is it taller than 2m
+  questionBank.negativeResponse.negativeResponse.negativeResponse.question =
+      'is it taller than 2m?';
+  questionBank.negativeResponse.negativeResponse.negativeResponse
+      .positiveResponse = null;
+  questionBank.negativeResponse.negativeResponse.negativeResponse
+      .negativeResponse = null;
+  questionBank.negativeResponse.negativeResponse.negativeResponse
+      .positiveAnswer = 'giraffe';
+  questionBank.negativeResponse.negativeResponse.negativeResponse
+      .negativeAnswer = 'fox';
 
-// Think of animal
-//  Can it fly?
-/// yes
-// Is it a predator?
-/// yes
-// is it nocturnal?
-/// no
-// is it eagle
-/// yes
-// YAYYY
+  print('Lets Play a game');
+  print('Guess an animal');
+  sleep(Duration(seconds: 2));
+  print(questionBank.question); //can it fly
+  String userInput;
+  userInput = stdin.readLineSync();
+  if (userInput == 'y') {
+    print(questionBank.positiveResponse.question); //can it swim
+    userInput = stdin.readLineSync();
+    if (userInput == 'y') {
+      print(questionBank.positiveResponse.positiveAnswer); //duck
+    }
+    if (userInput == 'n') {
+      print(questionBank.positiveResponse.negativeAnswer); //parrot
+    }
+  }
+
+  if (userInput == 'n') {
+    print(questionBank.negativeResponse.question); //can it climb trees?
+    userInput = stdin.readLineSync();
+    if (userInput == 'y') {
+      print(questionBank.negativeResponse.positiveAnswer); //monkey
+      print('monkey here');
+    }
+
+    if (userInput == 'n') {
+      print(questionBank
+          .negativeResponse.negativeResponse.question); //is it a pet
+      userInput = stdin.readLineSync();
+      if (userInput == 'y') {
+        print(questionBank
+            .negativeResponse.negativeResponse.positiveAnswer); //dog
+      }
+      if (userInput == 'n') {
+        print(questionBank.negativeResponse.negativeResponse.negativeResponse
+            .question); //is it taller than 2m?
+        userInput = stdin.readLineSync();
+        if (userInput == 'y') {
+          print(questionBank.negativeResponse.negativeResponse.negativeResponse
+              .positiveAnswer); //giraffe
+        }
+        if (userInput == 'n') {
+          print(questionBank.negativeResponse.negativeResponse.negativeResponse
+              .negativeAnswer); //fox
+        }
+      }
+    }
+  }
+}

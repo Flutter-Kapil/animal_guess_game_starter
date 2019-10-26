@@ -13,15 +13,12 @@ class Question {
       this.negativeAnswer = '',
       this.positiveResponse,
       this.negativeResponse});
-//  Question(
-//      {this.question,
-//      this.positiveResponse,
-//      this.negativeResponse,
-//      this.nextQuestion});
 }
 
+
+
 void main() {
-  //1st lock
+  //1st block
   Question questionBank = Question();
   questionBank.question = 'can it fly?';
   questionBank.positiveResponse = Question(); //can it swim
@@ -49,7 +46,7 @@ void main() {
       // wait for user to confirm duck
       userInput = stdin.readLineSync();
       if (userInput == 'y') {
-        // use confirmred its a duck end game
+        // use confirmed its a duck end game
         playGame = false;
         break;
       } //positive to can it fly and its a duck ends here.
@@ -58,7 +55,6 @@ void main() {
       if (userInput == 'n') {
         helpMeImprovePositiveSide(newAnimal, questionBank, newQuestion);
       }
-      continue;
     } else if (userInput == 'n' && questionBank.negativeAnswer.isNotEmpty) {
       // user entered no to can it fly? and there was an answer for no ,bat.
       //so ask if its a bat

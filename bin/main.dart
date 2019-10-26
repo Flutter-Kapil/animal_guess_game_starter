@@ -32,6 +32,7 @@ void main() {
   print('lets play a game');
   print('guess an animal');
   sleep(Duration(seconds: 2));
+  firstloop:
   while (playGame) {
     print(questionBank.question);
     //can it fly?
@@ -40,6 +41,7 @@ void main() {
     String newQuestion;
     userInput = stdin.readLineSync();
 
+    secondLoop:
     if (userInput == 'y' && questionBank.positiveAnswer.isNotEmpty) {
       // if it can fly then is it duck? and positiveAnswer is not null
 
@@ -47,32 +49,16 @@ void main() {
       // wait for user to confirm duck
       userInput = stdin.readLineSync();
       if (userInput == 'y') {
-        // use confimred its a duck end game
+        // use confirmred its a duck end game
         playGame = false;
         break;
       } //positive to can it fly and its a duck ends here.
 
       //now another loop to check if it can fly but its not a duck and we only had duck under can it fly
       if (userInput == 'n') {
-        print('help me improve');
-        print('which animal were you thinking of?');
-        newAnimal = stdin.readLineSync();
-        print(
-            'What question would distinguish between a ${questionBank.positiveAnswer} and A $newAnimal?');
-        newQuestion = stdin.readLineSync();
-        print('how will you answer $newQuestion for  $newAnimal');
-        userInput = stdin.readLineSync();
-        if (userInput == 'y') {
-          questionBank.positiveResponse.question = newQuestion;
-          questionBank.positiveResponse.positiveResponse = Question();
-          questionBank.positiveResponse.negativeResponse = Question();
-          questionBank.positiveResponse.negativeAnswer =
-              questionBank.positiveAnswer;
-          questionBank.positiveAnswer = '';
-          questionBank.positiveResponse.positiveAnswer = newAnimal;
-          continue;
-        }
+        helpMeImprovePositiveSide(newAnimal, questionBank, newQuestion);
       }
+      continue;
     } else if (userInput == 'n' && questionBank.negativeAnswer.isNotEmpty) {
       // user entered no to can it fly? and there was an answer for no ,bat.
       //so ask if its a bat
@@ -82,7 +68,7 @@ void main() {
         playGame = false;
         break;
       }
-    } else if (userInput == 'n' && questionBank.negativeAnswer == null) {
+    } else if (userInput == 'n' && questionBank.negativeAnswer.isEmpty) {
       print('help me improve');
       print('what were u thinking of?');
       userInput = stdin.readLineSync();
@@ -101,7 +87,72 @@ void main() {
       if (userInput == 'n') {}
     } else if (userInput == 'y' && questionBank.positiveAnswer.isEmpty) {
       questionBank = questionBank.positiveResponse;
-      continue;
+      print('i am here now step 9');
+      continue secondLoop;
+    }
+  }
+}
+
+void helpMeImprovePositiveSide(
+    String newAnimal, Question questionBank, String newQuestion) {
+  print('help me improve');
+  print('which animal were you thinking of?');
+  newAnimal = stdin.readLineSync();
+  print(
+      'What question would distinguish between a ${questionBank.positiveAnswer} and A $newAnimal?');
+  newQuestion = stdin.readLineSync();
+  print('how will you answer $newQuestion for  $newAnimal');
+  String userInput = stdin.readLineSync();
+  if (userInput == 'y') {
+    questionBank.positiveResponse.question = newQuestion;
+    questionBank.positiveResponse.positiveResponse = Question();
+    questionBank.positiveResponse.negativeResponse = Question();
+    questionBank.positiveResponse.negativeAnswer = questionBank.positiveAnswer;
+
+    questionBank.positiveAnswer = '';
+    questionBank.positiveResponse.positiveAnswer = newAnimal;
+    if (userInput == 'n') {
+      questionBank.negativeResponse.question = newQuestion;
+      questionBank.positiveResponse.positiveResponse = Question();
+      questionBank.positiveResponse.negativeResponse = Question();
+      questionBank.positiveResponse.positiveAnswer =
+          questionBank.positiveAnswer;
+
+      questionBank.positiveAnswer = '';
+
+      questionBank.negativeResponse.negativeAnswer = newAnimal;
+    }
+  }
+}
+
+void helpMeImproveNegativeSide(
+    String newAnimal, Question questionBank, String newQuestion) {
+  print('help me improve');
+  print('which animal were you thinking of?');
+  newAnimal = stdin.readLineSync();
+  print(
+      'What question would distinguish between a ${questionBank.positiveAnswer} and A $newAnimal?');
+  newQuestion = stdin.readLineSync();
+  print('how will you answer $newQuestion for  $newAnimal');
+  String userInput = stdin.readLineSync();
+  if (userInput == 'y') {
+    questionBank.negativeResponse.question = newQuestion;
+    questionBank.negativeResponse.positiveResponse = Question();
+    questionBank.negativeResponse.negativeResponse = Question();
+    questionBank.negativeResponse.negativeAnswer = questionBank.negativeAnswer;
+
+    questionBank.negativeAnswer = newAnimal;
+    questionBank.negativeResponse.positiveAnswer = newAnimal;
+    if (userInput == 'n') {
+      questionBank.negativeResponse.question = newQuestion;
+      questionBank.positiveResponse.positiveResponse = Question();
+      questionBank.positiveResponse.negativeResponse = Question();
+      questionBank.positiveResponse.positiveAnswer =
+          questionBank.positiveAnswer;
+
+      questionBank.positiveAnswer = '';
+
+      questionBank.negativeResponse.negativeAnswer = newAnimal;
     }
   }
 }

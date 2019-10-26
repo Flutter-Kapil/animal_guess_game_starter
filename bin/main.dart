@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'dart:io';
 
 class Question {
@@ -9,6 +7,12 @@ class Question {
   String positiveAnswer;
   String negativeAnswer;
 
+  Question(
+      {this.question = '',
+      this.positiveAnswer = '',
+      this.negativeAnswer = '',
+      this.positiveResponse,
+      this.negativeResponse});
 //  Question(
 //      {this.question,
 //      this.positiveResponse,
@@ -21,92 +25,83 @@ void main() {
   Question questionBank = Question();
   questionBank.question = 'can it fly?';
   questionBank.positiveResponse = Question(); //can it swim
-  questionBank.positiveAnswer = null;
-  questionBank.negativeAnswer = null;
+  questionBank.positiveAnswer = 'duck';
+  questionBank.negativeAnswer = 'rat';
   questionBank.negativeResponse = Question(); // can it climb trees
-
-  //origin -left 1
-//  questionBank.positiveResponse = Question(); //can it swim
-  questionBank.positiveResponse.question = 'can it swim?';
-  questionBank.positiveResponse.positiveResponse = null;
-  questionBank.positiveResponse.negativeResponse = null;
-  questionBank.positiveResponse.positiveAnswer = 'duck';
-  questionBank.positiveResponse.negativeAnswer = 'Parrot';
-
-  //origin-right1
-//  questionBank.negativeResponse = Question(); // can it climb trees
-  questionBank.negativeResponse.question = 'can it climb trees?';
-  questionBank.negativeResponse.positiveResponse = null;
-  questionBank.negativeResponse..positiveAnswer = 'monkey';
-  questionBank.negativeResponse.negativeResponse = Question(); //is it a pet
-  questionBank.negativeResponse.negativeAnswer = null;
-
-//  questionBank.negativeResponse.negativeResponse = Question();//is it a pet
-  questionBank.negativeResponse.negativeResponse.question = 'is it a pet?';
-  questionBank.negativeResponse.negativeResponse.positiveResponse = null;
-  questionBank.negativeResponse.negativeResponse.negativeResponse =
-      Question(); //is it taller than 2m
-  questionBank.negativeResponse.negativeResponse.positiveAnswer = 'dog';
-  questionBank.negativeResponse.negativeResponse.negativeAnswer = null;
-
-//  questionBank.negativeResponse.negativeResponse.negativeResponse=Question();//is it taller than 2m
-  questionBank.negativeResponse.negativeResponse.negativeResponse.question =
-      'is it taller than 2m?';
-  questionBank.negativeResponse.negativeResponse.negativeResponse
-      .positiveResponse = null;
-  questionBank.negativeResponse.negativeResponse.negativeResponse
-      .negativeResponse = null;
-  questionBank.negativeResponse.negativeResponse.negativeResponse
-      .positiveAnswer = 'giraffe';
-  questionBank.negativeResponse.negativeResponse.negativeResponse
-      .negativeAnswer = 'fox';
-
-  print('Lets Play a game');
-  print('Guess an animal');
+  bool playGame = true;
+  print('lets play a game');
+  print('guess an animal');
   sleep(Duration(seconds: 2));
-  print(questionBank.question); //can it fly
-  String userInput;
-  userInput = stdin.readLineSync();
-  if (userInput == 'y') {
-    print(questionBank.positiveResponse.question); //can it swim
+  while (playGame) {
+    print(questionBank.question);
+    //can it fly?
+    String userInput;
+    String newAnimal;
+    String newQuestion;
     userInput = stdin.readLineSync();
-    if (userInput == 'y') {
-      print(questionBank.positiveResponse.positiveAnswer); //duck
-    }
-    if (userInput == 'n') {
-      print(questionBank.positiveResponse.negativeAnswer); //parrot
-    }
-  }
 
-  if (userInput == 'n') {
-    print(questionBank.negativeResponse.question); //can it climb trees?
-    userInput = stdin.readLineSync();
-    if (userInput == 'y') {
-      print(questionBank.negativeResponse.positiveAnswer); //monkey
-      print('monkey here');
-    }
+    if (userInput == 'y' && questionBank.positiveAnswer.isNotEmpty) {
+      // if it can fly then is it duck? and positiveAnswer is not null
 
-    if (userInput == 'n') {
-      print(questionBank
-          .negativeResponse.negativeResponse.question); //is it a pet
+      print(questionBank.positiveAnswer);
+      // wait for user to confirm duck
       userInput = stdin.readLineSync();
       if (userInput == 'y') {
-        print(questionBank
-            .negativeResponse.negativeResponse.positiveAnswer); //dog
-      }
+        // use confimred its a duck end game
+        playGame = false;
+        break;
+      } //positive to can it fly and its a duck ends here.
+
+      //now another loop to check if it can fly but its not a duck and we only had duck under can it fly
       if (userInput == 'n') {
-        print(questionBank.negativeResponse.negativeResponse.negativeResponse
-            .question); //is it taller than 2m?
+        print('help me improve');
+        print('which animal were you thinking of?');
+        newAnimal = stdin.readLineSync();
+        print(
+            'What question would distinguish between a ${questionBank.positiveAnswer} and A $newAnimal?');
+        newQuestion = stdin.readLineSync();
+        print('how will you answer $newQuestion for  $newAnimal');
         userInput = stdin.readLineSync();
         if (userInput == 'y') {
-          print(questionBank.negativeResponse.negativeResponse.negativeResponse
-              .positiveAnswer); //giraffe
-        }
-        if (userInput == 'n') {
-          print(questionBank.negativeResponse.negativeResponse.negativeResponse
-              .negativeAnswer); //fox
+          questionBank.positiveResponse.question = newQuestion;
+          questionBank.positiveResponse.positiveResponse = Question();
+          questionBank.positiveResponse.negativeResponse = Question();
+          questionBank.positiveResponse.negativeAnswer =
+              questionBank.positiveAnswer;
+          questionBank.positiveAnswer = '';
+          questionBank.positiveResponse.positiveAnswer = newAnimal;
+          continue;
         }
       }
+    } else if (userInput == 'n' && questionBank.negativeAnswer.isNotEmpty) {
+      // user entered no to can it fly? and there was an answer for no ,bat.
+      //so ask if its a bat
+      print(questionBank.negativeAnswer);
+      userInput = stdin.readLineSync();
+      if (userInput == 'y') {
+        playGame = false;
+        break;
+      }
+    } else if (userInput == 'n' && questionBank.negativeAnswer == null) {
+      print('help me improve');
+      print('what were u thinking of?');
+      userInput = stdin.readLineSync();
+      String newAnimal = userInput;
+
+      print(
+          'how to differentitate between ${questionBank.positiveAnswer} & $newAnimal');
+      userInput = stdin.readLineSync();
+      String newQuestion = userInput;
+      print('ok');
+
+      print(
+          "how will you answer the same question for ${questionBank.positiveAnswer}");
+      userInput = stdin.readLineSync();
+      if (userInput == 'y') {}
+      if (userInput == 'n') {}
+    } else if (userInput == 'y' && questionBank.positiveAnswer.isEmpty) {
+      questionBank = questionBank.positiveResponse;
+      continue;
     }
   }
 }

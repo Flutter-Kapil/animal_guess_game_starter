@@ -15,8 +15,6 @@ class Question {
       this.negativeResponse});
 }
 
-
-
 void main() {
   //1st block
   Question questionBank = Question();

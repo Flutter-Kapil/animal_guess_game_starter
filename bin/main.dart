@@ -25,10 +25,10 @@ void main() {
   questionBank.negativeResponse = Question(); // can it climb trees
   bool playGame = true;
   print('lets play a game');
-  print('guess an animal');
-  sleep(Duration(seconds: 2));
   firstloop:
   while (playGame) {
+    print('guess an animal');
+    sleep(Duration(seconds: 2));
     print(questionBank.question);
     //can it fly?
     String userInput;
@@ -80,6 +80,7 @@ void main() {
       if (userInput == 'y') {}
       if (userInput == 'n') {}
     } else if (userInput == 'y' && questionBank.positiveAnswer.isEmpty) {
+      if (questionBank.positiveResponse.positiveAnswer.isNotEmpty) {}
       questionBank = questionBank.positiveResponse;
       print('i am here now step 9');
       continue secondLoop;
@@ -129,18 +130,15 @@ void helpMeImproveNegativeSide(
   newQuestion = stdin.readLineSync();
   print('how will you answer $newQuestion for  $newAnimal');
   String userInput = stdin.readLineSync();
+  questionBank.negativeResponse.question = newQuestion;
+  questionBank.positiveResponse.positiveResponse = Question();
+  questionBank.positiveResponse.negativeResponse = Question();
   if (userInput == 'y') {
-    questionBank.negativeResponse.question = newQuestion;
-    questionBank.negativeResponse.positiveResponse = Question();
-    questionBank.negativeResponse.negativeResponse = Question();
     questionBank.negativeResponse.negativeAnswer = questionBank.negativeAnswer;
 
     questionBank.negativeAnswer = newAnimal;
-    questionBank.negativeResponse.positiveAnswer = newAnimal;
+    questionBank.negativeResponse.positiveAnswer = '';
     if (userInput == 'n') {
-      questionBank.negativeResponse.question = newQuestion;
-      questionBank.positiveResponse.positiveResponse = Question();
-      questionBank.positiveResponse.negativeResponse = Question();
       questionBank.positiveResponse.positiveAnswer =
           questionBank.positiveAnswer;
 

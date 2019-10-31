@@ -43,27 +43,30 @@ void main() {
 }
 
 void helpMeImprove(Question question) {
+  Question newQuestion = Question();
+  newQuestion.yesNode = Question();
+  newQuestion.noNode = Question();
+
   print('help me improve');
   print('which animal were you thinking of?');
   String newAnimal = stdin.readLineSync();
   print(
       'What question would distinguish between a ${question.yesNode.text} and A $newAnimal?');
-  String newQuestion = stdin.readLineSync();
-  print('how will you answer $newQuestion for  $newAnimal');
+  String newQuestionText = stdin.readLineSync();
+  print('how will you answer $newQuestionText for  $newAnimal');
   String userInput = stdin.readLineSync();
   //--------------
   String prevAnimal = question.yesNode.text;
-  question.yesNode.text = newQuestion;
-  question.yesNode.yesNode = Question();
-  question.yesNode.noNode = Question();
+  newQuestion.text = newQuestionText;
   //---------
   if (userInput == 'y') {
-    question.yesNode.yesNode.text = newAnimal;
-    question.yesNode.noNode.text = prevAnimal;
+    newQuestion.yesNode.text = newAnimal;
+    newQuestion.noNode.text = prevAnimal;
   } else if (userInput == 'n') {
-    question.yesNode.yesNode.text = prevAnimal;
-    question.yesNode.noNode.text = newAnimal;
+    newQuestion.yesNode.text = prevAnimal;
+    newQuestion.noNode.text = newAnimal;
   }
+  question.yesNode = newQuestion; // in no node case question.noNode=newQuestion
 }
 //void helpMeImprove(Question qBank) {
 //  print('help me improve');

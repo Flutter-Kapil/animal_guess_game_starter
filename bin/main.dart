@@ -17,9 +17,9 @@ void main() {
   question.noNode.text = "monkey";
 
   print('lets play a question');
+  print('guess an animal');
   gameStart:
   while (questionOn) {
-    print('guess an animal');
     print(question.text); //can it fly?
     //get user response y or n ?
     userInput = stdin.readLineSync();

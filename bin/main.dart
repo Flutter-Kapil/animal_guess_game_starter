@@ -16,27 +16,31 @@ class Node {
     return userAnimal;
   }
   void askForDifference()=>print("How is it different from $que");
+
   void addNode(String userAnimal,String difference){
     print("is it true for $que");
     String res = stdin.readLineSync();
     Node temp=Node();
     if (res == 'yes' || res == 'y' || res == 'Yes' || res == 'Y') {
       //if answer s yes, then switch to yes branch and if answer is no, then switch to no branch
-      yes = Node(que: userAnimal);
-      no = Node(que:que);
-    } else {
       no = Node(que:userAnimal);
       yes = Node(que:que);
+
+    } else {
+      yes = Node(que: userAnimal);
+      no = Node(que:que);
     }
     que=difference;
   }
 }
 
 class Game {
-  Node startNode = Node(que: "duck");
+  static Node nodeA=Node(que:"duck" );
+  static Node nodeB=Node(que:"elephant" );
+  Node startNode = Node(que: "can it fly",yes: nodeA,no: nodeB);
 
-  void startGame() {
-    Node node = startNode;
+  void startGame(Node start) {
+    Node node = start;
     print("lets play a game");
     print("think of an animal");
     bool askingQuestions = !node.isLast();
@@ -64,19 +68,7 @@ class Game {
         animalConfirmation == 'Yes' ||
         animalConfirmation == 'Y') {
       //if answer s yes, then switch to yes branch and if answer is no, then switch to no branch
-      node.startOver();
-      String startAgain = stdin.readLineSync();
-      if (startAgain == 'yes' ||
-          startAgain == 'y' ||
-          startAgain == 'Yes' ||
-          startAgain == 'Y') {
-        //start the same again
-        Game game = Game();
-        game.startGame();
-      } else {
-        //means answer is no, so end the game
-        return;
-      }
+
     }else{
       //means animal is not in database, ask what animal it is? then ask for difference and add it to database
       String playerAnimal = node.getUserAnimal();
@@ -85,24 +77,25 @@ class Game {
       String difference = stdin.readLineSync();
       node.addNode(playerAnimal, difference);
       //start over
-      node.startOver();
-      String startAgain = stdin.readLineSync();
-      if (startAgain == 'yes' ||
-          startAgain == 'y' ||
-          startAgain == 'Yes' ||
-          startAgain == 'Y') {
-        //start the same again
-        Game game = Game();
-        game.startGame();
-      } else {
-        //means answer is no, so end the game
-        return;
-      }
+    }
+    //after saving yes and no response, start game again
+    node.startOver();
+    String startAgain = stdin.readLineSync();
+    if (startAgain == 'yes' ||
+        startAgain == 'y' ||
+        startAgain == 'Yes' ||
+        startAgain == 'Y') {
+      //start the same again
+      Game game = Game();
+      game.startGame(startNode);
+    } else {
+      //means answer is no, so end the game
+      return;
     }
   }
 }
 
 void main() {
   Game game = Game();
-  game.startGame();
+  game.startGame(game.startNode);
 }

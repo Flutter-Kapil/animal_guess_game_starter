@@ -10,6 +10,26 @@ class Node {
   void confirmAnimal() => print("is it $que");
   void askQuestion() => print(que);
   void startOver() => print("do you want to play again");
+  String getUserAnimal(){
+    print("What animal were you thinking of?");
+    String userAnimal = stdin.readLineSync();
+    return userAnimal;
+  }
+  void askForDifference()=>print("How is it different from $que");
+  void addNode(String userAnimal,String difference){
+    print("is it true for $que");
+    String res = stdin.readLineSync();
+    Node temp=Node();
+    if (res == 'yes' || res == 'y' || res == 'Yes' || res == 'Y') {
+      //if answer s yes, then switch to yes branch and if answer is no, then switch to no branch
+      yes = Node(que: userAnimal);
+      no = Node(que:que);
+    } else {
+      no = Node(que:userAnimal);
+      yes = Node(que:que);
+    }
+    que=difference;
+  }
 }
 
 class Game {
@@ -44,6 +64,27 @@ class Game {
         animalConfirmation == 'Yes' ||
         animalConfirmation == 'Y') {
       //if answer s yes, then switch to yes branch and if answer is no, then switch to no branch
+      node.startOver();
+      String startAgain = stdin.readLineSync();
+      if (startAgain == 'yes' ||
+          startAgain == 'y' ||
+          startAgain == 'Yes' ||
+          startAgain == 'Y') {
+        //start the same again
+        Game game = Game();
+        game.startGame();
+      } else {
+        //means answer is no, so end the game
+        return;
+      }
+    }else{
+      //means animal is not in database, ask what animal it is? then ask for difference and add it to database
+      String playerAnimal = node.getUserAnimal();
+      //ask for difference
+      node.askForDifference();
+      String difference = stdin.readLineSync();
+      node.addNode(playerAnimal, difference);
+      //start over
       node.startOver();
       String startAgain = stdin.readLineSync();
       if (startAgain == 'yes' ||

@@ -35,9 +35,7 @@ class Node {
 }
 
 class Game {
-  static Node nodeA=Node(que:"duck" );
-  static Node nodeB=Node(que:"elephant" );
-  Node startNode = Node(que: "can it fly",yes: nodeA,no: nodeB);
+  Node startNode = Node(que: "duck",);
 
   void startGame(Node start) {
     Node node = start;
